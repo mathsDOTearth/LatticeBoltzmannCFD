@@ -2,6 +2,8 @@
 Version 0.1 by rich of maths.earth  
 A simple Lattice Boltzman CFD written in C with SDL rendering and OpenMP parallel for loops for a bit more speed.
 
+More info on LBM here: https://en.wikipedia.org/wiki/Lattice_Boltzmann_methods
+
 This program implements a high-performance fluid dynamics simulation using the Lattice Boltzmann Method (LBM). The LBM is a computational technique for simulating fluid flows, particularly effective in handling complex boundary conditions and capturing detailed fluid dynamics on a discrete grid. This simulation models the evolution of fluid density across a grid, allowing for the visualisation of fluid behaviour in real-time.
 
 Colour Mapping: Fluid density is visualised using a multi-colour gradient, smoothly transitioning from blue (low density) through green (medium density) to red (high density). This colour mapping enhances the interpretability of the simulation, making it easier to identify and analyse regions of interest.
