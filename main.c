@@ -13,6 +13,20 @@ int main() {
     int nx = 200, ny = 200;  // Increased grid resolution
     initialise(&lbm, nx, ny);
 
+    #pragma omp parallel
+    {
+        // This call is placed inside the parallel region to ensure it provides the actual number of threads used.
+        int num_threads = omp_get_num_threads();
+
+        // To print once per parallel region, use the master directive
+        #pragma omp master
+        {
+            printf("Number of threads = %d\n", num_threads);
+        }
+    }
+
+    double start_time = omp_get_wtime(); // Start timing
+    
     // Initialise SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -44,6 +58,12 @@ int main() {
     int running = 1;
     int time_steps = 1000;
 
+    // Allocate memory for smoothed_rho outside the loop
+    double **smoothed_rho = malloc(nx * sizeof(double *));
+    for (int x = 0; x < nx; x++) {
+        smoothed_rho[x] = malloc(ny * sizeof(double));
+    }
+
     for (int t = 0; t < time_steps && running; t++) {
         // Process events
         while (SDL_PollEvent(&event)) {
@@ -71,8 +91,6 @@ int main() {
         }
 
         // Apply optional smoothing to the density field
-        double smoothed_rho[nx][ny];
-
         #pragma omp parallel for collapse(2)
         for (int x = 1; x < nx - 1; x++) {
             for (int y = 1; y < ny - 1; y++) {
@@ -80,11 +98,10 @@ int main() {
             }
         }
 
-        // Render the smoothed density field with enhanced colour mapping
+        // Render the smoothed density field with enhanced colour mapping (serial rendering)
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Black background
         SDL_RenderClear(renderer);
 
-        #pragma omp parallel for collapse(2)
         for (int x = 1; x < nx - 1; x++) {
             for (int y = 1; y < ny - 1; y++) {
                 // Normalise density between min_rho and max_rho
@@ -105,7 +122,6 @@ int main() {
                     b = 0;
                 }
 
-                // Rendering each square is thread-safe since each pixel is independent
                 SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 
                 int cell_width = WINDOW_WIDTH / nx;
@@ -127,9 +143,20 @@ int main() {
 
         // Print debug information every 100 time steps
         if (t % 100 == 0) {
+            double end_time = omp_get_wtime(); // End timing
+            printf("Time elapsed: %f seconds\n", end_time - start_time);
             printf("Time step %d: ux[0][0] = %f, uy[0][0] = %f, rho[0][0] = %f\n", t, lbm.ux[0][0], lbm.uy[0][0], lbm.rho[0][0]);
         }
     }
+
+    double end_time = omp_get_wtime(); // End timing
+    printf("Time elapsed: %f seconds\n", end_time - start_time);
+
+    // Free the memory for smoothed_rho after the loop
+    for (int x = 0; x < nx; x++) {
+        free(smoothed_rho[x]);
+    }
+    free(smoothed_rho);
 
     // Cleanup
     SDL_DestroyRenderer(renderer);
