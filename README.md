@@ -13,3 +13,14 @@ Rendered to a resolution of 800 x 800 and a simulation grid of 200 x 200.
 Enhanced resolution and colour mapping for more detailed and informative output.  
 OpenMP parallelisation for improved performance on multi-core systems.  
 
+# Code Timings
+
+These timings are from an average of 3 runs and are in seconds.  Lower values are better.
+
+| System | X13s | Oryx Pro 6 | AMD x5700 PC | Milk-5 Jupiter | BananaPi F3 |
+| :--------------- | ------------: | ------------: | -------: | ----: | -------: |
+| serial | 25.615 |  |  |  |   |
+| 2 threads |  |   |   |  |   |
+| 4 threads |  |   |   |    |   |
+| 8 threads |  |   | NA | NA | 226.71 |
+| 16 threads |  |   | NA | NA | NA |
