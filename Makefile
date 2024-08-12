@@ -1,6 +1,6 @@
 GCC=gcc
 CFLAGS=-O3 -o 
-LDFLAGS=-lm -lSDL2
+LDFLAGS=-lm -lSDL2 -fopenmp
 TARGET=lbm
 SRC=main.c lbm.c 
 
