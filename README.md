@@ -19,8 +19,8 @@ These timings are from an average of 3 runs and are in seconds.  Lower values ar
 
 | System | X13s | Oryx Pro 6 | AMD x5700 PC | Milk-5 Jupiter | BananaPi F3 |
 | :--------------- | ------------: | ------------: | -------: | ----: | -------: |
-| serial | 25.615 |  |  |  |   |
+| serial | 25.615 |  | 22.312 |  |   |
 | 2 threads |  |   |   |  |   |
 | 4 threads |  |   |   |    |   |
-| 8 threads |  |   | NA | NA | 226.71 |
+| 8 threads |  |   | NA | NA |  |
 | 16 threads |  |   | NA | NA | NA |
