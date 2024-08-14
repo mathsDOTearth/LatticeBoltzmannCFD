@@ -13,6 +13,9 @@ Rendered to a resolution of 800 x 800 and a simulation grid of 200 x 200.
 Enhanced resolution and colour mapping for more detailed and informative output.  
 OpenMP parallelisation for improved performance on multi-core systems.  
 
+# memory usage
+In main.c if you increase the size of nx and ny to 400 or 800 from 200 then you may need to use `ulimit -s unlimited` in the teminal before running the simulation to stop is core dumping due to memory issues.
+
 # Code Timings
 
 These timings are from an average of 3 runs and are in seconds.  Lower values are better.
