@@ -84,9 +84,16 @@ void collision_step(LBM *lbm) {
 }
 
 void streaming_step(LBM *lbm) {
-    double temp[lbm->nx][lbm->ny][Q];
+    // Allocate memory on the heap for the temporary array
+    double ***temp = malloc(lbm->nx * sizeof(double**));
+    for (int x = 0; x < lbm->nx; x++) {
+        temp[x] = malloc(lbm->ny * sizeof(double*));
+        for (int y = 0; y < lbm->ny; y++) {
+            temp[x][y] = malloc(Q * sizeof(double));
+        }
+    }
 
-    // Copy the current state to a temporary array
+    // Copy the current state to the temporary array
     for (int x = 0; x < lbm->nx; x++) {
         for (int y = 0; y < lbm->ny; y++) {
             for (int k = 0; k < Q; k++) {
@@ -105,6 +112,15 @@ void streaming_step(LBM *lbm) {
             }
         }
     }
+
+    // Free the allocated memory
+    for (int x = 0; x < lbm->nx; x++) {
+        for (int y = 0; y < lbm->ny; y++) {
+            free(temp[x][y]);
+        }
+        free(temp[x]);
+    }
+    free(temp);
 }
 
 void boundary_conditions(LBM *lbm) {
