@@ -139,7 +139,8 @@ int main() {
 
         SDL_RenderPresent(renderer);
 
-        SDL_Delay(16);  // Delay to control the frame rate (~60 FPS)
+        // Delay to control the frame rate (~60 FPS)
+        // SDL_Delay(16);  
 
         // Print debug information every 100 time steps
         if (t % 100 == 0) {
