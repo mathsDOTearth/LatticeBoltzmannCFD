@@ -73,6 +73,7 @@ void compute_macroscopic_variables(LBM *lbm) {
 void collision_step(LBM *lbm) {
     double tau = 0.6;  // Relaxation time
 
+    #pragma omp parallel for 
     for (int x = 0; x < lbm->nx; x++) {
         for (int y = 0; y < lbm->ny; y++) {
             for (int k = 0; k < Q; k++) {
